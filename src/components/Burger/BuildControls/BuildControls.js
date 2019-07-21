@@ -11,6 +11,8 @@ const controls = [
 
 const buildControls = (props) => (
     <div className={classes.BuildControls}>
+        {/* displaying price dynamically */}
+        <p>Current Price: <strong>${props.price.toFixed(2)}</strong></p>
         {/* create array of buildControl objects */}
         {controls.map(ctrl =>
             <BuildControl 
