@@ -8,13 +8,22 @@ const burger = (props) => {
     //
     // Object.keys() returns keys of object passed in
     // result is ['salad', 'bacon', 'cheese', 'meat'] from BurgerBuilder
-    const transformedIngredients = Object.keys(props.ingredients)
+    let transformedIngredients = Object.keys(props.ingredients)
         .map(igKey => {
             return [...Array(props.ingredients[igKey])]
                 .map((_, i) => {
                     return <BurgerIngredient key={igKey + i} type={igKey} />
                 });
-        });
+        })
+        // to check if we have ingredients, ie check inner arrays,
+        // flatten array using reduce
+        .reduce((arr, el) => {
+            return arr.concat(el)
+        }, []);
+        if (transformedIngredients.length === 0) {
+            transformedIngredients = <p>Please start adding ingredients!</p>
+        } 
+        
     return (
         <div className={classes.Burger}>
             <BurgerIngredient type="bread-top"/>
