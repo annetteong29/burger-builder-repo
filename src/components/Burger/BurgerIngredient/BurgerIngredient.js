@@ -2,6 +2,10 @@ import React from 'react';
 import classes from './BurgerIngredient.module.css';
 import PropTypes from 'prop-types';
 
+// class BurgerIngredient extends Component {
+//     render switch case
+//     using this.props.type instead of props.type
+// }
 const burgerIngredient = (props) => {
     let ingredient = null;
     
@@ -37,7 +41,8 @@ const burgerIngredient = (props) => {
 };
 
 burgerIngredient.propTypes = {
-    ingredient: PropTypes.string
+    // ingredient: PropTypes.string
+    type: PropTypes.string.isRequired
 };
 
 export default burgerIngredient;
