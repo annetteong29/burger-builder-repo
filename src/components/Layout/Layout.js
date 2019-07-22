@@ -2,11 +2,12 @@ import React from 'react';
 import Aux from '../../hoc/Aux';
 import classes from './Layout.module.css';
 import Toolbar from '../Navigation/Toolbar/Toolbar';
+import SideDrawer from '../Navigation/SideDrawer/SideDrawer';
 
 const layout = ( props ) => (
     <Aux>
         <Toolbar />
-        <div>SideDrawer</div>
+        <SideDrawer />
         <main className={classes.Content}>
             {/* output the component this layout wraps */}
             {props.children}

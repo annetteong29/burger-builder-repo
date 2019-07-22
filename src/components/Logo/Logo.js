@@ -4,6 +4,7 @@ import classes from './Logo.module.css';
 import burgerLogo from '../../assets/images/burger-logo.png';
 
 const logo = (props) => (
+    // style={{height: props.height}
     <div className={classes.Logo}>
         {/* cannot simply navigate to assets folder 
         because of build workflow - only within src folder */}
