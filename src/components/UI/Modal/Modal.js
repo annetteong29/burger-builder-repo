@@ -7,7 +7,8 @@ class Modal extends Component {
     
     // only update if different
     shouldComponentUpdate(nextProps, nextState) {
-        return nextProps.show !== this.props.show;
+        // second part checks if orderSummary or Spinner 
+        return nextProps.show !== this.props.show || nextProps.children !== this.props.children;
     }
 
     componentWillUpdate() {
