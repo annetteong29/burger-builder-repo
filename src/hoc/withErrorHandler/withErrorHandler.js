@@ -4,30 +4,44 @@ import Aux from '../Aux/Aux';
 
 const withErrorHandler = (WrappedComponent, axios) => {
     return class extends Component {
-        // we want to register interceptors 
-        // BEFORE child components are rendered
 
         state = {
             error: null
         }
 
-        // only called after all child elements have been rendered
-        // i.e. end of return statement, in this case WrappedComponent
-        // BUT since that reaches out to web in componentDidMount of WrappedComponent,
-        // interceptors that return error msgs are not set up
-        // unless componentWillMount or constructor is used
         componentWillMount() {
-            axios.interceptors.request.use(req => {
+            this.reqInterceptor = axios.interceptors.request.use(req => {
                 // clear any errors to ensure no error when 
                 // new HTTP request is sent
                 this.setState({error: null});
                 return req;
             })
-            axios.interceptors.response.use(res => res, error => {
+            this.resInterceptor = axios.interceptors.response.use(res => res, error => {
                 console.log('[withErrorHandler] DidMount');
                 console.log(error);
                 this.setState({error: error});
             });
+        }
+
+        // multiple interceptors are being attached to 
+        // the same axios instance every time wEH is called.
+        // when wEH is used across multiple pages i.e. routing,
+        // multiple axios instances/classes will be called &
+        // interceptors previously attached to components where wEH was used
+        // will not be needed anymore BUT still exist.
+        // worst case they could lead to errors or change state of app,
+        // and in best case, just leak memory
+        //
+        // (for useEffect in functional component, this part of code
+        // would be in return part of useEffect method.)
+        componentWillUnmount() {
+            // console.log('WillUnmount', this.reqInterceptor, this.resInterceptor);
+            // returns 0 and 0 - these are IDs being kept by axios' memory
+            // for both the request and response interceptors,
+            // i.e. 2 different lists of interceptors
+            // they start with index 0 and each list now has 1 element each
+            axios.interceptors.request.eject(this.reqInterceptor);
+            axios.interceptors.response.eject(this.resInterceptor);
         }
 
         errorConfirmedHandler = () => {
