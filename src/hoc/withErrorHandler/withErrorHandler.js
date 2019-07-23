@@ -23,23 +23,8 @@ const withErrorHandler = (WrappedComponent, axios) => {
             });
         }
 
-        // multiple interceptors are being attached to 
-        // the same axios instance every time wEH is called.
-        // when wEH is used across multiple pages i.e. routing,
-        // multiple axios instances/classes will be called &
-        // interceptors previously attached to components where wEH was used
-        // will not be needed anymore BUT still exist.
-        // worst case they could lead to errors or change state of app,
-        // and in best case, just leak memory
-        //
-        // (for useEffect in functional component, this part of code
-        // would be in return part of useEffect method.)
         componentWillUnmount() {
             // console.log('WillUnmount', this.reqInterceptor, this.resInterceptor);
-            // returns 0 and 0 - these are IDs being kept by axios' memory
-            // for both the request and response interceptors,
-            // i.e. 2 different lists of interceptors
-            // they start with index 0 and each list now has 1 element each
             axios.interceptors.request.eject(this.reqInterceptor);
             axios.interceptors.response.eject(this.resInterceptor);
         }

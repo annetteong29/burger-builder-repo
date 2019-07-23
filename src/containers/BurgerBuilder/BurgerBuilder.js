@@ -173,10 +173,4 @@ class BurgerBuilder extends Component {
     };
 }
 
-// typically error handling functions like wEH are used across components
-// so eg. if BurgerBuilder component no longer needed in other pages,
-// ejecting in wEH are necessary to clean up interceptors that were
-// attached when wEH was being used in BurgerBuilder
-// so when wEH is reused in other parts of the app, 
-// the old ones don't live on when newer ones are created.
 export default withErrorHandler(BurgerBuilder, axios);
